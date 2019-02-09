@@ -39,7 +39,8 @@ public class PoolPreparer : MonoBehaviour
         List<GameObject> prefabsToRemove = new List<GameObject>();
         foreach (var prefab in prefabs.Where(t=> t != null))
         {
-            if (PrefabUtility.GetPrefabType(prefab) != PrefabType.Prefab)
+            //PrefabUtility.GetPrefabAssetType(prefab) != PrefabAssetType.Regular
+            if(PrefabUtility.GetPrefabType(prefab) != PrefabType.Prefab)
             {
                 Debug.LogError(string.Format("{0} is not a prefab.  It has been removed.", prefab.gameObject.name));
                 prefabsToRemove.Add(prefab.gameObject);
