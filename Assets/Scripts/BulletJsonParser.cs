@@ -49,7 +49,7 @@ public class BulletJsonParser : MonoBehaviour
     {
         float direction = 0.0f;
         float speed = 0.0f;
-        Bullet bullet = new Bullet(null, direction, speed, null);
+        Bullet bullet = new Bullet(null, direction, speed, null, false);
         var obj = jsonKeyValue.Value.Value<JObject>();
         foreach ( var o in obj )
         {
@@ -67,7 +67,7 @@ public class BulletJsonParser : MonoBehaviour
                     bullet = ParseBullet(o);
                     break;
                 default:
-                    print("ERROR: unsupported action!");
+                    print("ERROR: unsupported action! <" + o.Key + ">");
                     break;
             }
         }
@@ -81,6 +81,7 @@ public class BulletJsonParser : MonoBehaviour
         float direction = 0.0f;
         float speed = 0.0f;
         string bulletRef = "";
+        bool reflectable = false;
         var obj = jsonKeyValue.Value.Value<JObject>();
         foreach (var o in obj)
         {
@@ -101,12 +102,16 @@ public class BulletJsonParser : MonoBehaviour
                     print("setting bullet ref file to " + (string)o.Value);
                     bulletRef = (string)(o.Value);
                     break;
+                case "reflectable":
+                    print("setting bullet reflectability to " + (bool)o.Value);
+                    reflectable = (bool)o.Value;
+                    break;
                 default:
-                    print("ERROR: unsupported action!");
+                    print("ERROR: unsupported action! <" + o.Key + ">");
                     break;
             }
         }
-        return new Bullet( bulletRef, direction, speed, actions );
+        return new Bullet( bulletRef, direction, speed, actions, reflectable );
     }
 
     BulletAction ParseAction( System.Collections.Generic.KeyValuePair<string, JToken> jsonKeyValue)
@@ -124,7 +129,7 @@ public class BulletJsonParser : MonoBehaviour
                     actions.Enqueue(ParseAction(o));
                     break;
                 default:
-                    print("ERROR: unsupported action!");
+                    print("ERROR: unsupported action! <" + o.Key + ">");
                     break;
             }
         }

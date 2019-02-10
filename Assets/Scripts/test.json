@@ -1,11 +1,12 @@
 {
 "fire": 
 	{
-	"bulletObj": 
+	"bullet": 
 	{
-		"bulletref": "Fireball",
+		"bulletRef": "Fireball",
 		"direction": 180,
-		"speed": 10
+		"speed": 10,
+		"reflectable": true
 	},
 	"direction": 180,
 	"speed" : 10
