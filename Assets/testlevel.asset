@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Test level
   enemySpawns:
-  - enemy: 0
+  - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
     spawnPosition: {x: 0, y: 0}
-    delay: 0
-  - enemy: 0
+    delayToNext: 0
+  - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
     spawnPosition: {x: 0, y: 0}
-    delay: 0
-  - enemy: 0
+    delayToNext: 0
+  - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
     spawnPosition: {x: 0, y: 0}
-    delay: 0
+    delayToNext: 0

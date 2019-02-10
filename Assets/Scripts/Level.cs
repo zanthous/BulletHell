@@ -11,9 +11,9 @@ public class Level : ScriptableObject
     [System.Serializable]
     public class LevelPart
     {
-        public EnemyType enemy;
+        public Enemy enemy;
         public Vector2 spawnPosition;
-        public float delay;
+        public float delayToNext;
     }
 
     public LevelPart[] enemySpawns;

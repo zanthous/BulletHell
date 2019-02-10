@@ -7,12 +7,8 @@ public class Enemy : ScriptableObject
 {
     //initial sprite
     public Sprite sprite;
+    //store attack/moving animations in here somehow
 
-    //List<AttackPatterns>
-    //List<MovementPatterns> - contain animations in here?
-}
-
-public enum EnemyType
-{
-    test
+    public TextAsset[] jsonAttackPatterns;
+    public MovementPattern[] movementPatterns;
 }
