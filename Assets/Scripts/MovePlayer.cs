@@ -9,7 +9,7 @@ public class MovePlayer : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     // Start is called before the first frame update
@@ -21,13 +21,13 @@ public class MovePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 moveOffset = 
-            new Vector2(Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed, 
+        Vector2 moveOffset =
+            new Vector2(Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed,
             Input.GetAxisRaw("Vertical") * Time.deltaTime * speed);
 
         //SpriteRenderer a = gameObject.GetComponent<SpriteRenderer>();
 
         transform.position += (Vector3)moveOffset;
     }
-    
+
 }
