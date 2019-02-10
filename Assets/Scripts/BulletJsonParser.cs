@@ -50,30 +50,28 @@ public class BulletJsonParser : MonoBehaviour
         float direction = 0.0f;
         float speed = 0.0f;
         Bullet bullet = new Bullet(null, direction, speed, null);
-        foreach (JToken token in jsonKeyValue.Value)
+        var obj = jsonKeyValue.Value.Value<JObject>();
+        foreach ( var o in obj )
         {
-            var obj = (JObject) token;
-            foreach ( var o in obj )
+            switch(o.Key)
             {
-                switch(o.Key)
-                {
-                    case "direction":
-                        print("Setting direction to " + (float)o.Value);
-                        direction = (float) o.Value;
-                        break;
-                    case "speed":
-                        print("Setting speed to " + (float)o.Value);
-                        speed = (float) o.Value;
-                        break;
-                    case "bullet":
-                        bullet = ParseBullet(o);
-                        break;
-                    default:
-                        print("ERROR: unsupported action!");
-                        break;
-                }
+                case "direction":
+                    print("Setting direction to " + (float)o.Value);
+                    direction = (float) o.Value;
+                    break;
+                case "speed":
+                    print("Setting speed to " + (float)o.Value);
+                    speed = (float) o.Value;
+                    break;
+                case "bullet":
+                    bullet = ParseBullet(o);
+                    break;
+                default:
+                    print("ERROR: unsupported action!");
+                    break;
             }
         }
+        
         return new Fire(bullet, direction, speed);
     }
 
@@ -83,32 +81,29 @@ public class BulletJsonParser : MonoBehaviour
         float direction = 0.0f;
         float speed = 0.0f;
         string bulletRef = "";
-        foreach (JToken token in jsonKeyValue.Value)
+        var obj = jsonKeyValue.Value.Value<JObject>();
+        foreach (var o in obj)
         {
-            var obj = (JObject)token;
-            foreach (var o in obj)
+            switch (o.Key)
             {
-                switch (o.Key)
-                {
-                    case "direction":
-                        print("Setting direction to " + (float)o.Value);
-                        direction = (float)o.Value;
-                        break;
-                    case "speed":
-                        print("Setting speed to " + (float)o.Value);
-                        speed = (float)o.Value;
-                        break;
-                    case "action":
-                        actions.Enqueue(ParseAction(o));
-                        break;
-                    case "bulletRef":
-                        print("setting bullet ref file to " + (string)o.Value);
-                        bulletRef = (string)(o.Value);
-                        break;
-                    default:
-                        print("ERROR: unsupported action!");
-                        break;
-                }
+                case "direction":
+                    print("Setting direction to " + (float)o.Value);
+                    direction = (float)o.Value;
+                    break;
+                case "speed":
+                    print("Setting speed to " + (float)o.Value);
+                    speed = (float)o.Value;
+                    break;
+                case "action":
+                    actions.Enqueue(ParseAction(o));
+                    break;
+                case "bulletRef":
+                    print("setting bullet ref file to " + (string)o.Value);
+                    bulletRef = (string)(o.Value);
+                    break;
+                default:
+                    print("ERROR: unsupported action!");
+                    break;
             }
         }
         return new Bullet( bulletRef, direction, speed, actions );
@@ -117,23 +112,20 @@ public class BulletJsonParser : MonoBehaviour
     BulletAction ParseAction( System.Collections.Generic.KeyValuePair<string, JToken> jsonKeyValue)
     {
         Queue actions = new Queue();
-        foreach (JToken token in jsonKeyValue.Value)
+        var obj = jsonKeyValue.Value.Value<JObject>();
+        foreach (var o in obj)
         {
-            var obj = (JObject)token;
-            foreach (var o in obj)
+            switch (o.Key)
             {
-                switch (o.Key)
-                {
-                    case "fire":
-                        actions.Enqueue(ParseFire(o));
-                        break;
-                    case "action":
-                        actions.Enqueue(ParseAction(o));
-                        break;
-                    default:
-                        print("ERROR: unsupported action!");
-                        break;
-                }
+                case "fire":
+                    actions.Enqueue(ParseFire(o));
+                    break;
+                case "action":
+                    actions.Enqueue(ParseAction(o));
+                    break;
+                default:
+                    print("ERROR: unsupported action!");
+                    break;
             }
         }
         return new BulletAction(actions);
