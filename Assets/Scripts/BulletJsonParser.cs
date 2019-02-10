@@ -114,7 +114,7 @@ public class BulletJsonParser : MonoBehaviour
         return new Bullet( bulletRef, direction, speed, actions );
     }
 
-    Action ParseAction( System.Collections.Generic.KeyValuePair<string, JToken> jsonKeyValue)
+    BulletAction ParseAction( System.Collections.Generic.KeyValuePair<string, JToken> jsonKeyValue)
     {
         Queue actions = new Queue();
         foreach (JToken token in jsonKeyValue.Value)
@@ -136,7 +136,7 @@ public class BulletJsonParser : MonoBehaviour
                 }
             }
         }
-        return new Action(actions);
+        return new BulletAction(actions);
     }
 
     // Update is called once per frame
