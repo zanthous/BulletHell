@@ -8,6 +8,7 @@ public class BulletJsonParser : MonoBehaviour
 {
     [SerializeField]
     private string config;
+    // These are substituted for any refs
     private Dictionary<string, JToken> idToToken = new Dictionary<string, JToken>();
     // Use this for initialization
     void Start()
@@ -23,11 +24,44 @@ public class BulletJsonParser : MonoBehaviour
     {
         print("Loading bullet config at " + file);
         string jsonText = File.ReadAllText(file);
-        JObject o = JObject.Parse(jsonText);
-        // Recursively parse each top-level token
-        foreach ( var token in o )
+        //All bulletJson files must have a root of bulletJson
+        JArray rootJsonArray = JObject.Parse(jsonText)["bulletJson"].Value<JArray>();
+        // Build cache of id tokens to substitute for refs later on
+        foreach ( var token in rootJsonArray)
         {
-            Parse(token);
+            BuildIdCache(token.Value<JObject>());
+        }
+        // Recursively parse each top-level token
+        foreach (var token in rootJsonArray)
+        {
+            JObject jsonObj = token.Value<JObject>();
+            foreach(var kv in jsonObj)
+            {
+                Parse(kv);
+            }
+        }
+    }
+
+    // Recursivly build cache of substitution tokens
+    void BuildIdCache( JObject jsonObj )
+    {
+        foreach ( var keyVal in jsonObj )
+        {
+            // Base case for recusion
+            if( !keyVal.Value.HasValues )
+            {
+                return;
+            }
+            JObject childObj = keyVal.Value.Value<JObject>();
+            foreach (var childKeyVal in childObj)
+            {
+                if (childKeyVal.Key == "id")
+                {
+                    print("Setting id = " + (string)childKeyVal.Value);
+                    idToToken[(string)childKeyVal.Value] = keyVal.Value;
+                }
+            }
+            BuildIdCache(childObj);
         }
     }
 
@@ -42,6 +76,7 @@ public class BulletJsonParser : MonoBehaviour
                 ParseBullet(jsonKeyValue);
                 break;
             case "fire":
+                print("Parsing Fire from root");
                 ParseFire(jsonKeyValue);
                 break;
         }
@@ -53,30 +88,28 @@ public class BulletJsonParser : MonoBehaviour
         float speed = 0.0f;
         Bullet bullet = new Bullet(null, direction, speed, null, false);
         var obj = jsonKeyValue.Value.Value<JObject>();
-        foreach ( var o in obj )
+        foreach (var keyVal in obj )
         {
-            switch(o.Key)
+            switch(keyVal.Key)
             {
                 case "id":
-                    print("Setting id = " + (string)o.Value);
-                    idToToken[(string)o.Value] = jsonKeyValue.Value;
                     break;
                 case "direction":
-                    print("Setting direction to " + (float)o.Value);
-                    direction = (float) o.Value;
+                    print("Setting direction to " + (float)keyVal.Value);
+                    direction = (float) keyVal.Value;
                     break;
                 case "speed":
-                    print("Setting speed to " + (float)o.Value);
-                    speed = (float) o.Value;
+                    print("Setting speed to " + (float)keyVal.Value);
+                    speed = (float) keyVal.Value;
                     break;
                 case "bullet":
-                    bullet = ParseBullet(o);
+                    bullet = ParseBullet(keyVal);
                     break;
                 case "bulletRef":
-                    bullet = ParseBulletRef((string)o.Value);
+                    bullet = ParseBulletRef((string)keyVal.Value);
                     break;
                 default:
-                    print("ERROR: unsupported action! <" + o.Key + ">");
+                    print("ERROR: unsupported action! <" + keyVal.Key + ">");
                     break;
             }
         }
@@ -92,38 +125,36 @@ public class BulletJsonParser : MonoBehaviour
         string bulletFile = "";
         bool reflectable = false;
         var obj = jsonKeyValue.Value.Value<JObject>();
-        foreach (var o in obj)
+        foreach (var keyVal in obj)
         {
-            switch (o.Key)
+            switch (keyVal.Key)
             {
                 case "id":
-                    print("Setting id = " + (string)o.Value);
-                    idToToken[(string)o.Value] = jsonKeyValue.Value;
                     break;
                 case "direction":
-                    print("Setting direction to " + (float)o.Value);
-                    direction = (float)o.Value;
+                    print("Setting direction to " + (float)keyVal.Value);
+                    direction = (float)keyVal.Value;
                     break;
                 case "speed":
-                    print("Setting speed to " + (float)o.Value);
-                    speed = (float)o.Value;
+                    print("Setting speed to " + (float)keyVal.Value);
+                    speed = (float)keyVal.Value;
                     break;
                 case "action":
-                    actions.Enqueue(ParseAction(o));
+                    actions.Enqueue(ParseAction(keyVal));
                     break;
                 case "actionRef":
-                    actions.Enqueue(ParseActionRef((string)o.Value));
+                    actions.Enqueue(ParseActionRef((string)keyVal.Value));
                     break;
                 case "bulletFile":
-                    print("setting bullet ref file to " + (string)o.Value);
-                    bulletFile = (string)(o.Value);
+                    print("setting bullet ref file to " + (string)keyVal.Value);
+                    bulletFile = (string)(keyVal.Value);
                     break;
                 case "reflectable":
-                    print("setting bullet reflectability to " + (bool)o.Value);
-                    reflectable = (bool)o.Value;
+                    print("setting bullet reflectability to " + (bool)keyVal.Value);
+                    reflectable = (bool)keyVal.Value;
                     break;
                 default:
-                    print("ERROR: unsupported action! <" + o.Key + ">");
+                    print("ERROR: unsupported action! <" + keyVal.Key + ">");
                     break;
             }
         }
@@ -134,25 +165,23 @@ public class BulletJsonParser : MonoBehaviour
     {
         Queue actions = new Queue();
         var obj = jsonKeyValue.Value.Value<JObject>();
-        foreach (var o in obj)
+        foreach (var keyVal in obj)
         {
-            switch (o.Key)
+            switch (keyVal.Key)
             {
                 case "id":
-                    print("Setting id = " + (string)o.Value);
-                    idToToken[(string)o.Value] = jsonKeyValue.Value;
                     break;
                 case "fire":
-                    actions.Enqueue(ParseFire(o));
+                    actions.Enqueue(ParseFire(keyVal));
                     break;
                 case "action":
-                    actions.Enqueue(ParseAction(o));
+                    actions.Enqueue(ParseAction(keyVal));
                     break;
                 case "actionRef":
-                    actions.Enqueue(ParseActionRef(o.Key));
+                    actions.Enqueue(ParseActionRef(keyVal.Key));
                     break;
                 default:
-                    print("ERROR: unsupported action! <" + o.Key + ">");
+                    print("ERROR: unsupported action! <" + keyVal.Key + ">");
                     break;
             }
         }
@@ -161,16 +190,19 @@ public class BulletJsonParser : MonoBehaviour
 
     Bullet ParseBulletRef( string refId )
     {
+        print("Parsing bulletRef with refId = " + refId);
         return ParseBullet( new KeyValuePair<string, JToken> ( "bullet", idToToken[refId]) );
     }
 
     BulletAction ParseActionRef( string refId )
     {
+        print("Parsing actionRef with refId = " + refId);
         return ParseAction( new KeyValuePair<string, JToken>( "action", idToToken[refId]) );
     }
 
     Fire ParseFireRef( string refId )
     {
+        print("Parsing fireRef with refId = " + refId);
         return ParseFire( new KeyValuePair<string, JToken>("fire", idToToken[refId]) );
     }
 
