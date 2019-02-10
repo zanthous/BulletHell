@@ -1,21 +1,23 @@
 {
-"fire": 
-	{
-	"bulletRef" : "Kappa",
-	"direction": 180,
-	"speed" : 10
-	},
-"fire":
-	{
-	"bullet": 
-	{
-		"id": "Kappa",
-		"bulletFile": "Fireball",
-		"direction": 180,
-		"speed": 10,
-		"reflectable": true
-	},
-	"direction" : 69,
-	"speed" : 69
-	}
+	"bulletJson": [{
+			"fire": {
+				"bulletRef": "Kappa",
+				"direction": 180,
+				"speed": 10
+			}
+		},
+		{
+			"fire": {
+				"bullet": {
+					"id": "Kappa",
+					"bulletFile": "Fireball",
+					"direction": 180,
+					"speed": 10,
+					"reflectable": true
+				},
+				"direction": 69,
+				"speed": 69
+			}
+		}
+	]
 }
