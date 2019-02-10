@@ -11,3 +11,8 @@ public class Enemy : ScriptableObject
     //List<AttackPatterns>
     //List<MovementPatterns> - contain animations in here?
 }
+
+public enum EnemyType
+{
+    test
+}
