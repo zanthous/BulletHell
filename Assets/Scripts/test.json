@@ -1,0 +1,13 @@
+{
+"fire": 
+	{
+	"bulletObj": 
+	{
+		"bulletref": "Fireball",
+		"direction": 180,
+		"speed": 10
+	},
+	"direction": 180,
+	"speed" : 10
+	}
+}
