@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet : MonoBehaviour
+public class Bullet
 {
     //angle
     private float direction;
@@ -16,16 +16,5 @@ public class Bullet : MonoBehaviour
         this.direction = direction;
         this.speed = speed;
         this.actions = actions;
-    }
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

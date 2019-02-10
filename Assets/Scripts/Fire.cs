@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Fire : MonoBehaviour
+public class Fire
 {
     Bullet bullet;
     //Angle in degrees
@@ -13,17 +13,5 @@ public class Fire : MonoBehaviour
         this.bullet = bullet;
         this.direction = direction;
         this.speed = speed;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
