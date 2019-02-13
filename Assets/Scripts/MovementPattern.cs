@@ -14,6 +14,7 @@ public class MovementPattern : ScriptableObject
         public MovementEnd movementEnd;
         public float duration;
         public Vector2 point;
+        public bool vanishAfterComplete;
         public float delay;
     }
 
