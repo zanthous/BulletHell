@@ -18,28 +18,33 @@ MonoBehaviour:
     movementEnd: 0
     duration: 0
     point: {x: 0, y: 0}
+    vanishAfterComplete: 0
     delay: 0
   - moveType: 0
     moveSpeed: 0
     movementEnd: 0
     duration: 0
     point: {x: 0, y: 0}
+    vanishAfterComplete: 0
     delay: 0
   - moveType: 0
     moveSpeed: 0
     movementEnd: 0
     duration: 0
     point: {x: 0, y: 0}
+    vanishAfterComplete: 0
     delay: 0
   - moveType: 0
     moveSpeed: 0
     movementEnd: 0
     duration: 0
     point: {x: 0, y: 0}
+    vanishAfterComplete: 0
     delay: 0
   - moveType: 0
     moveSpeed: 0
     movementEnd: 0
     duration: 0
     point: {x: 0, y: 0}
+    vanishAfterComplete: 1
     delay: 0

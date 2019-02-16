@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Set either direction or point
+[System.Serializable]
+public class MovementCommand
+{
+    public MovementType moveType;
+    //public float moveSpeed;
+    public float sinFrequency;
+    public float sinMagnitude;
+    public MovementEnd movementEnd;
+    public float duration;
+    public Vector2 pointOrDirection;
+    public bool vanishAfterComplete;
+    public float delay;
+}
+
 [CreateAssetMenu]
 public class MovementPattern : ScriptableObject
 {
-    //Set either duration or point
-    [System.Serializable]
-    public class MovementCommand
-    {
-        public MovementType moveType;
-        public float moveSpeed;
-        public MovementEnd movementEnd;
-        public float duration;
-        public Vector2 point;
-        public bool vanishAfterComplete;
-        public float delay;
-    }
-
     public MovementCommand[] movementCommands;
 }
 
