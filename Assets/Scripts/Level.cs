@@ -12,8 +12,12 @@ public class Level : ScriptableObject
     public class LevelPart
     {
         public Enemy enemy;
-        public Vector2 spawnPosition;
-        public float delayToNext;
+        [Range(-1.1f, 1.1f)]
+        public float xSpawn;
+        [Range(-1.1f, 1.1f)]
+        public float ySpawn;
+        [Tooltip("How long to wait before spawning the enemy after this one")]
+        public float secondsDelayToNext;
     }
 
     public LevelPart[] enemySpawns;

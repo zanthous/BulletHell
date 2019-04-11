@@ -8,9 +8,9 @@ public class Shoot : MonoBehaviour
     private GameObject bullet;
     private Pool pool;
     private float timer = 0.0f;
-    private float shootInterval = .05f;
+    private float shootInterval = .2f;
     // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
         pool = Pool.GetPool(bullet.GetComponent<Fireball>());   
     }
@@ -18,13 +18,13 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //timer += Time.deltaTime;
-        //if(timer > shootInterval) 
-        //{
-        //    var test = pool.Get<Fireball>();
-        //    test.gameObject.SetActive(true);
-        //    test.gameObject.transform.position = transform.position;
-        //    timer = 0.0f;
-        //}
+        timer += Time.deltaTime;
+        if (timer > shootInterval)
+        {
+            var test = pool.Get<Fireball>();
+            test.gameObject.SetActive(true);
+            test.gameObject.transform.position = transform.position;
+            timer = 0.0f;
+        }
     }
 }

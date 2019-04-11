@@ -7,12 +7,15 @@ using UnityEngine.SceneManagement;
 //Currently setup to not persist between scenes but can be changed
 public class LevelManager : MonoBehaviour
 {
-    public GameObject enemyBasePrefab;
-    public Level level;
-    private float timer;
+    [SerializeField]
+    private GameObject enemyBasePrefab;
+    [SerializeField]
+    private Level level;
     private float currentDelay;
     private string levelName;
     private int enemyIndex = 0;
+
+    //TODO
     //Level will be determined to be over if the enemyIndex == length of enemyspawns 
     //and all enemies in the pool are disabled
     
@@ -29,18 +32,19 @@ public class LevelManager : MonoBehaviour
         {
             if(currentDelay <= 0.0f)
             {
-                currentDelay = level.enemySpawns[enemyIndex].delayToNext;
+                currentDelay = level.enemySpawns[enemyIndex].secondsDelayToNext;
                 //TODO get from pool instead
                 GameObject temp = Instantiate(enemyBasePrefab);
                 temp.GetComponent<SpriteRenderer>().sprite = level.enemySpawns[enemyIndex].enemy.sprite;
                 temp.transform.position = new Vector3(
-                    Game.Right * level.enemySpawns[enemyIndex].spawnPosition.x,
-                    Game.Top * level.enemySpawns[enemyIndex].spawnPosition.y,
+                    level.enemySpawns[enemyIndex].xSpawn * Game.Right,
+                    level.enemySpawns[enemyIndex].ySpawn * Game.Top,
                     temp.transform.position.z);
+                temp.GetComponent<EnemyMovement>().Setup(level.enemySpawns[enemyIndex].enemy.movementPatterns);
+                enemyIndex++;
                 //Add components for enemy movement and enemy attack and call their startup 
                 //with the information they need, so probably pass in level.enemySpawns[enemyIndex].enemy.jsonAttackPatterns
                 //and level.enemySpawns[enemyIndex].enemy.movementPatterns
-
             }
             else
             {

@@ -7,43 +7,50 @@ public class EnemyMovement : MonoBehaviour
 {
     //Each pattern is made of pattern commands
     //Enemies can have as many patterns as we want to add to them
-    //For now patterns will default to looping, unless a command has vanishAfterComplete set (subject to change)
+    //For now patterns will default to looping, unless a command has vanishAfterComplete set 
     private MovementPattern[] patterns;
     private MovementCommand currentCommand;
-
+    
     private int patternIndex = 0;
     private int patternCommandIndex = 0;
 
-    private float closeEnough = 0.05f;
+    //How close an enemy needs to be to a point before moving to the next command
+    private float closeEnough = 0.5f;
+    //Duration command timer
     private float durationTimer;
     private float duration;
+    //Timer between moves
     private float delayTimer;
     private float delay;
-    private float scaledX;
-    private float scaledY;
-    private float currentVelocity;
+    private float startTime;
 
     private bool isDuration;
+
+    //Point if move type is point, direction if move type is duration
     private Vector2 point;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        currentCommand = patterns[patternIndex].movementCommands[patternCommandIndex];
-    }
-
+    private Vector2 direction;
+    private Vector2 worldPoint;
+    private Vector2 durationResultantPoint;
+    private Vector2 currentVelocity;
+    private Vector2 startPos;
+    private Vector2 perpendicular;
+    private Vector2 scaledPos;
+    
     // Update is called once per frame
     void Update()
     {
+        //Setup hasn't been called yet
+        if (currentCommand == null)
+            return;
+        //Wait if there is a delay until the next command
         if(delay > 0 && delayTimer < delay)
         {
             delayTimer += Time.deltaTime;
             return;
         }
 
-        //TODO handle delays
-        scaledX = transform.position.x / Game.Right;
-        scaledY = transform.position.y / Game.Top;
+        durationTimer += Time.deltaTime;
+        
         //Resolve current pattern + command
         if(isDuration)
         {
@@ -57,10 +64,10 @@ public class EnemyMovement : MonoBehaviour
                 switch(currentCommand.moveType)
                 {
                     case MovementType.SmoothArrive:
-                        //Vector2.SmoothDamp
+                        transform.position = Vector2.SmoothDamp(transform.position, durationResultantPoint, ref currentVelocity, duration);
                         break;
                     case MovementType.Normal:
-                        //Vector2.Lerp
+                        transform.position = Vector2.Lerp(startPos, durationResultantPoint, (durationTimer / duration));
                         break;
                     case MovementType.Sine:
                         break;
@@ -71,7 +78,7 @@ public class EnemyMovement : MonoBehaviour
         }
         else//point
         {
-            if(Vector2.Distance(transform.position, new Vector2(scaledX, scaledY)) < closeEnough)
+            if(Vector2.Distance(Game.ToWorld(point), transform.position) < closeEnough)
             {
                 GetNextCommand();
             }
@@ -82,23 +89,29 @@ public class EnemyMovement : MonoBehaviour
                 {
                     case MovementType.SmoothArrive:
                         //smoothdamp
+                        transform.position = Vector2.SmoothDamp(transform.position,worldPoint, ref currentVelocity, duration);
                         break;
                     case MovementType.Normal:
+                        transform.position = Vector2.Lerp(startPos, worldPoint, (durationTimer / duration));
                         break;
                     case MovementType.Sine:
+                        //TODO
                         break;
                     default:
                         break;
                 }
             }
         }
-        }
+    }
 
-        //Increment patternIndex and pattern(if necessary)
-        private void GetNextCommand()
+    //Increment patternIndex and pattern(if necessary)
+    private void GetNextCommand()
     {
+        //Delay after command has completed
+        delay = currentCommand.delay;
+
         //Disable
-        if(patterns[patternIndex].movementCommands[patternCommandIndex].vanishAfterComplete)
+        if (patterns[patternIndex].movementCommands[patternCommandIndex].vanishAfterComplete)
         {
             gameObject.SetActive(false);
             return;
@@ -108,27 +121,38 @@ public class EnemyMovement : MonoBehaviour
         durationTimer = 0;
         delayTimer = 0;
 
-        if(patternCommandIndex >= patterns[patternIndex].movementCommands.Length) 
+        if(patternCommandIndex >= patterns[patternIndex].movementCommands.Length)
         {
             patternCommandIndex = 0;
             //Wrap patterns
             patternIndex = (patternIndex + 1) % patterns.Length;
         }
-
-        currentCommand = patterns[patternIndex].movementCommands[patternCommandIndex];
-
-        delay         = currentCommand.delay;
-        isDuration    = currentCommand.movementEnd == MovementEnd.Duration;
-        point         = currentCommand.pointOrDirection;
-        durationTimer = currentCommand.duration;
+        
+        UpdateCommandVariables();
     }
+
 
     public void Setup(MovementPattern[] patterns_in)
     {
         patternIndex = 0;
         patternCommandIndex = 0;
         durationTimer = 0.0f;
-        isDuration = false;
         patterns = patterns_in;
+
+        //Level -> Enemies -> Movement patterns -> Movement Commands
+        UpdateCommandVariables();
+    }
+
+    private void UpdateCommandVariables()
+    {
+        currentCommand = patterns[patternIndex].movementCommands[patternCommandIndex];
+        startPos = transform.position;
+        startTime = Time.time;
+        isDuration = (currentCommand.movementEnd == MovementEnd.Duration);
+        point = currentCommand.point;
+        duration = currentCommand.duration;
+        direction = currentCommand.durationDirection;
+        worldPoint = Game.ToWorld(point);
+        durationResultantPoint = Game.ToWorld(direction.normalized * currentCommand.durationMoveSpeed * duration);
     }
 }

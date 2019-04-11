@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b88d5b4cbbbe48f4c8397beac9a7f3cf, type: 3}
-  m_Name: testmovementpattern
+  m_Name: testmovementpattern 2
   m_EditorClassIdentifier: 
   movementCommands:
   - moveType: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
     duration: 1
     durationMoveSpeed: 0
     durationDirection: {x: 0, y: 0}
-    point: {x: 0, y: 0.8}
+    point: {x: -0.8, y: 0}
     vanishAfterComplete: 0
     delay: 1
   - moveType: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
     sinMagnitude: 0
     duration: 1.5
     durationMoveSpeed: 0
-    durationDirection: {x: -0.8, y: 0}
-    point: {x: 0, y: 0}
-    vanishAfterComplete: 0
+    durationDirection: {x: 0, y: 0}
+    point: {x: 0, y: 0.8}
+    vanishAfterComplete: 1
     delay: 0

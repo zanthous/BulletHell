@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: testenemy
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 25837c84e18e87a4280bf0721e222c7d, type: 3}
-  xSpawn: -1
-  ySpawn: 1
   jsonAttackPatterns:
   - {fileID: 4900000, guid: 9bbb1bc17e053174c8d1c919a95f095c, type: 3}
   movementPatterns:
   - {fileID: 11400000, guid: 22822e1acec5da644bebc5a07c16dfb5, type: 2}
+  - {fileID: 11400000, guid: 8b2328f13542ce74b810f808b6a83f07, type: 2}

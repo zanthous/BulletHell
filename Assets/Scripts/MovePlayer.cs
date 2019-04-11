@@ -9,6 +9,8 @@ public class MovePlayer : MonoBehaviour
     private float speed;
     private float width;
     private float height;
+    [SerializeField]
+    private SpriteRenderer collisionSprite;
     private void Awake()
     {
         width = GetComponent<SpriteRenderer>().bounds.max.x - GetComponent<SpriteRenderer>().bounds.min.x;
@@ -30,7 +32,12 @@ public class MovePlayer : MonoBehaviour
 
         if(Input.GetKey(KeyCode.LeftShift))
         {
+            collisionSprite.enabled = true;
             moveOffset /= 2.0f;
+        }
+        else
+        {
+            collisionSprite.enabled = false;
         }
 
         transform.position += (Vector3)moveOffset;

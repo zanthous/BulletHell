@@ -15,11 +15,14 @@ MonoBehaviour:
   levelName: Test level
   enemySpawns:
   - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
-    spawnPosition: {x: 0, y: 0}
-    delayToNext: 0
+    xSpawn: 0
+    ySpawn: 0.8
+    secondsDelayToNext: 3
   - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
-    spawnPosition: {x: 0, y: 0}
-    delayToNext: 0
+    xSpawn: 0
+    ySpawn: 0.8
+    secondsDelayToNext: 3
   - enemy: {fileID: 11400000, guid: 66c2dfe13b865f14792f99620c8a82d0, type: 2}
-    spawnPosition: {x: 0, y: 0}
-    delayToNext: 0
+    xSpawn: 0
+    ySpawn: 0.8
+    secondsDelayToNext: 0
