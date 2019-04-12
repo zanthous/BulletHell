@@ -22,19 +22,15 @@ public class EnemyMovement : MonoBehaviour
     //Timer between moves
     private float delayTimer;
     private float delay;
-    private float startTime;
 
     private bool isDuration;
 
-    //Point if move type is point, direction if move type is duration
     private Vector2 point;
     private Vector2 direction;
     private Vector2 worldPoint;
     private Vector2 durationResultantPoint;
     private Vector2 currentVelocity;
     private Vector2 startPos;
-    private Vector2 perpendicular;
-    private Vector2 scaledPos;
     
     // Update is called once per frame
     void Update()
@@ -127,11 +123,11 @@ public class EnemyMovement : MonoBehaviour
             //Wrap patterns
             patternIndex = (patternIndex + 1) % patterns.Length;
         }
-        
+        //Read command and update class variables
         UpdateCommandVariables();
     }
 
-
+    //Called after Levelmanager parses enemy scriptableobjects
     public void Setup(MovementPattern[] patterns_in)
     {
         patternIndex = 0;
@@ -147,9 +143,8 @@ public class EnemyMovement : MonoBehaviour
     {
         currentCommand = patterns[patternIndex].movementCommands[patternCommandIndex];
         startPos = transform.position;
-        startTime = Time.time;
-        isDuration = (currentCommand.movementEnd == MovementEnd.Duration);
         point = currentCommand.point;
+        isDuration = (currentCommand.movementEnd == MovementEnd.Duration);
         duration = currentCommand.duration;
         direction = currentCommand.durationDirection;
         worldPoint = Game.ToWorld(point);

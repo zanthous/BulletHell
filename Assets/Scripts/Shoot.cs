@@ -9,6 +9,7 @@ public class Shoot : MonoBehaviour
     private Pool pool;
     private float timer = 0.0f;
     private float shootInterval = .2f;
+
     // Start is called before the first frame update
     void Start() 
     {

@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementCommands:
   - moveType: 0
-    movementEnd: 0
+    movementEnd: 1
     sinFrequency: 0
     sinMagnitude: 0
     duration: 1
-    durationMoveSpeed: 0
-    durationDirection: {x: 0, y: 0}
-    point: {x: 0, y: 0.8}
+    durationMoveSpeed: 1
+    durationDirection: {x: 1, y: -1}
+    point: {x: 0, y: 0}
     vanishAfterComplete: 0
     delay: 1
   - moveType: 1
-    movementEnd: 0
+    movementEnd: 1
     sinFrequency: 0
     sinMagnitude: 0
     duration: 1.5
-    durationMoveSpeed: 0
-    durationDirection: {x: 0, y: 0}
-    point: {x: 0.8, y: 0}
+    durationMoveSpeed: 0.5
+    durationDirection: {x: -1, y: 0}
+    point: {x: 0, y: 0}
     vanishAfterComplete: 0
     delay: 0
   - moveType: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
     sinMagnitude: 0
     duration: 1.5
     durationMoveSpeed: 0
-    durationDirection: {x: -0.8, y: 0}
-    point: {x: 0, y: 0}
+    durationDirection: {x: 0, y: 0}
+    point: {x: 0, y: -0.8}
     vanishAfterComplete: 0
     delay: 0

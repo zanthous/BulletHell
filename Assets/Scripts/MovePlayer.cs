@@ -11,16 +11,11 @@ public class MovePlayer : MonoBehaviour
     private float height;
     [SerializeField]
     private SpriteRenderer collisionSprite;
+
     private void Awake()
     {
         width = GetComponent<SpriteRenderer>().bounds.max.x - GetComponent<SpriteRenderer>().bounds.min.x;
         height = GetComponent<SpriteRenderer>().bounds.max.y - GetComponent<SpriteRenderer>().bounds.min.y;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
     // Update is called once per frame
